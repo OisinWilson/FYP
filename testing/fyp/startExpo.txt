@@ -1,0 +1,4 @@
+node js
+
+cd C:\Users\Recycled Sloth\Desktop\testing\fyp
+expo start
