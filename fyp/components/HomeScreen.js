@@ -22,12 +22,20 @@ export default class HomeScreen extends React.Component {
   
           <View style={[{ width: "60%", margin: 20 }]}>
               <Button
-              title="Change Page"
+              title="Calender"
               color= "#ECA37A"
               onPress={() => navigate('Calendar')}
               />
           </View>
   
+          <View style={[{ width: "60%", margin: 20 }]}>
+              <Button
+              title="Circle"
+              color= "#ECA37A"
+              onPress={() => navigate('SCV')}
+              />
+          </View>
+
   
           <View style={styles.bottomView}>
             <View style={[{ width: "90%", margin: 10 }]}>
