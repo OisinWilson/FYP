@@ -3,48 +3,47 @@ import * as Native from 'react-native';
 import moment from 'moment';
 import ProgressCircle from 'react-native-progress-circle';
 
-let m_currentDate = moment().format();
-let m_checkMonthLength = m_currentDate.substring(0,7);
-
-let m_numDaysCurrentMonth = moment(m_checkMonthLength, "YYYY-MM").daysInMonth();
-let m_dateNumDay = moment().format("D");
-
-let m_circlePresent = (Number(m_dateNumDay) / Number(m_numDaysCurrentMonth) * 100) ;
-
-let dom =  1 / Number(m_numDaysCurrentMonth);
-let dayAngle = (dom * 360);
 
 
+let m_numDaysCurrentMonth = moment( moment().format().substring(0,7) , "YYYY-MM").daysInMonth();
+let m_dateDayNum = moment().format("D");
+let m_dateDay = moment().format("Do");
 
-let centerX = Math.round(Native.Dimensions.get('window').width) / 2;
-let centerY = Math.round(Native.Dimensions.get('window').height) / 2;
+let m_circlePercent  = (Number(m_dateDayNum) / Number(m_numDaysCurrentMonth) * 100);
+
+let dayAngleDeg = ( (1 / Number(m_numDaysCurrentMonth)) * 360);
+let dayAngleRad = (dayAngleDeg * (Math.PI / 180));
+
+
+
+let smallCircleRadius = 10;
+let percentCircleRadius = 120;
+let percetnBorderWidth = 30;
+let progressBarX = 85;
+let progressBarY = 120;
+
+
+
+let centerX = progressBarX + (percentCircleRadius - smallCircleRadius);
+let centerY = progressBarY + (percentCircleRadius - smallCircleRadius);
 
 let circleX = centerX;
-let circleY = centerY - 240;
+let circleY = centerY - (percentCircleRadius - (smallCircleRadius * 1.5));
 
-
-let rotatedX = roteX(circleX,circleY,centerX,centerY,-dayAngle);
-let rotatedY = roteY(circleX,circleY,centerX,centerY,-dayAngle);
-
-//let rotatedX = Math.cos(-dayAngle) * (circleX - centerX) - Math.sin(-dayAngle) * (circleY - centerY) + centerX;
-
-//let rotatedY = Math.sin(-dayAngle) * (circleX - centerX) + Math.cos(-dayAngle) * (circleY - centerY) + centerY;
+let rotatedX = roteX(circleX,circleY,centerX,centerY, (dayAngleRad/2));
+let rotatedY = roteY(circleX,circleY,centerX,centerY, (dayAngleRad/2));
 
 
 
-function roteX(posX,posY, centX,centY, angleDeg)
+function roteX(posX,posY, centX,centY, angleRad)
 {
-  return(Math.cos(angleDeg) * (posX - centX) - Math.sin(angleDeg) * (posY - centY) + centX);
+  return(Math.cos(angleRad) * (posX - centX) - Math.sin(angleRad) * (posY - centY) + centX);
 }
 
-function roteY(posX,posY, centX,centY, angleDeg)
+function roteY(posX,posY, centX,centY, angleRad)
 {
-  return (Math.sin(angleDeg) * (posX - centX) + Math.cos(angleDeg) * (posY -centY) + centY);
+  return (Math.sin(angleRad) * (posX - centX) + Math.cos(angleRad) * (posY -centY) + centY);
 }
-
-
-
-
 
 
 
@@ -54,38 +53,63 @@ export default class SymptomCircle extends React.Component
   
       let setOfCircles = [];
 
-      for(let i = 0; i < 1; i++){
-      
+      circleStyle = function(x, y, color) {
+        return {
+            width: smallCircleRadius * 2,
+            height: smallCircleRadius * 2,
+            borderRadius: 100/2,
+            backgroundColor: color,
+            position: 'absolute', 
+            left: x,
+            top: y
+        }
+      }
+
+      for(let i = 1; i <= (Number(m_dateDayNum)); i++){
+
         setOfCircles.push(
-          <Native.View style={styles.circle, {left:rotatedX, top:rotatedY}}>
-                         <Native.Text style={styles.textStyle}> display:{dayAngle }</Native.Text>
-          </Native.View>
+          <Native.View style={circleStyle(rotatedX, rotatedY,'blue')}/>
         )
 
+        rotatedX = roteX(circleX,circleY,centerX,centerY, (dayAngleRad * i) + dayAngleRad/2 );
+        rotatedY = roteY(circleX,circleY,centerX,centerY, (dayAngleRad * i) + dayAngleRad/2 );
       }
 
         return (
             <Native.View style={styles.MainContainer}>
 
-               <ProgressCircle
-                    percent={m_circlePresent}
-                    radius={120}
-                    borderWidth={40}
-                    color="#3399FF"
-                    shadowColor="#999"
-                    bgColor="#fff"
-                >
-                    <Native.Text style={{ fontSize: 18 }}>{dom}</Native.Text>
+              <Native.View style={styles.circleLocal}>
+                <ProgressCircle
+                      percent={m_circlePercent }
+                      radius={percentCircleRadius}
+                      borderWidth={percetnBorderWidth}
+                      color="#3399FF"
+                      shadowColor="#999"
+                      bgColor="#fff"
+                  >
+                   <Native.Text style={{ fontSize: 18 }}>{"Month View"}</Native.Text>
+                  </ProgressCircle>
+                </Native.View>
+                {setOfCircles} 
 
-                    <Native.View style={[styles.triangle]} />
 
-                </ProgressCircle>
+                <Native.View style={styles.square}>
+                  <Native.Text style={{ fontSize: 18, textAlign: 'center', marginTop: 10 }}>{m_dateDay + " Day"}</Native.Text>
+                </Native.View>
 
-                {setOfCircles}
 
-               <Native.View style={[styles.triangle, styles.triangleDown ]} />
 
-               
+                <Native.View style={styles.TextBoxNoGluten}>
+                  <Native.Text style={{ fontSize: 18, textAlign: 'center' }}>{m_dateDay + " Day's\nNo Gluten"}</Native.Text>
+                  <Native.View style={circleStyle(-25, 10,'green')}/>
+                </Native.View>
+
+                <Native.View style={styles.TextBoxGluten}>
+                  <Native.Text style={{ fontSize: 18, textAlign: 'center' }}>{m_dateDay + " Day's\nGluten"}</Native.Text>
+                  <Native.View style={circleStyle(-25, 10,'red')}/>
+                </Native.View>
+
+
             </Native.View>
         );
     }
@@ -98,63 +122,35 @@ const styles = Native.StyleSheet.create({
           flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
-          paddingTop: ( Native.Platform.OS === 'ios' ) ? 20 : 0,
           backgroundColor: '#FFFFFF',
+        },   
+        circleLocal:{
+          position:"absolute",
+          top: progressBarY,
+          left: progressBarX 
         },
-     
-        bottomView:{
-          width: '100%', 
-          height: 50, 
-          backgroundColor: '#FF9800', 
-          justifyContent: 'center', 
-          alignItems: 'center',
-          position: 'absolute',
-          bottom: 0
-        },
-     
-        textStyle:{
-          color: '#fff',
-          fontSize:16,
-          textAlign:"center",
-          marginTop:20
-        },
+        square: {
+          width: 100,
+          height: 50,
+          backgroundColor: 'red',
+          position:"absolute",
+          top: progressBarY - 60,
+          left: progressBarX + 70
+      },
 
-        circle: {
-            width: 50,
-            height: 50,
-            borderRadius: 100/2,
-            backgroundColor: 'blue',
-            position: 'absolute', 
-        },
+      TextBoxNoGluten: {
+        width: 100,
+        height: 50,
+        position:"absolute",
+        top: progressBarY + 300,
+        left: progressBarX
+    },
 
-        triangle: {
-          width: 0,
-          height: 0,
-          backgroundColor: 'transparent',
-          borderStyle: 'solid',
-          borderLeftWidth: 50,
-          borderRightWidth: 50,
-          borderBottomWidth: 100,
-          borderLeftColor: 'transparent',
-          borderRightColor: 'transparent',
-          borderBottomColor: 'red',
-        },
-
-        triangleDown: {
-          transform: [
-            {rotate: '180deg'}
-          ]
-        },
-
-        triangleLeft: {
-          transform: [
-            {rotate: '-90deg'}
-          ]
-        },
-
-        triangleRight: {
-          transform: [
-            {rotate: '90deg'}
-          ]
-        },
+    TextBoxGluten: {
+      width: 100,
+      height: 50,
+      position:"absolute",
+      top: progressBarY + 300,
+      left: progressBarX + 150
+  },
 });
