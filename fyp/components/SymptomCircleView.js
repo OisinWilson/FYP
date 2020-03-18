@@ -40,7 +40,6 @@ function roteY(posX,posY, centX,centY, angleRad)
 
 export default class SymptomCircle extends React.Component
 {
-  
     render() {
 
       let smallCircleRadius = this.props.progBarSmallRadius;
@@ -72,6 +71,7 @@ export default class SymptomCircle extends React.Component
 
       circleStyle = function(x, y, color) {
         return {
+            zIndex : 1,
             width: smallCircleRadius * 2,
             height: smallCircleRadius * 2,
             borderRadius: 100/2,
@@ -82,11 +82,35 @@ export default class SymptomCircle extends React.Component
         }
       }
 
+      /*
+      const testAlert=()=>{
+        alert("test")
+      }
+      */
+
       var CircleLoopCounter = 1;
       colourManager.forEach(element=>{
         switch (element) {
           case 0:
-            setOfCircles.push(<Native.View style={circleStyle(rotatedX, rotatedY, this.props.NoInputColour)}/>);
+            /*
+            setOfCircles.push(<Native.View style={circleStyle(rotatedX, rotatedY, this.props.NoInputColour)}>
+                                <Native.TouchableOpacity style={zIndex = 1} onPress={this.onPress}>
+                                  <Native.Text>y</Native.Text>
+                                </Native.TouchableOpacity>
+                              </Native.View>);
+            
+            setOfCircles.push(
+              <Native.TouchableOpacity onPress={() => testAlert()} style={circleStyle(rotatedX, rotatedY, this.props.NoInputColour)}>
+                <Native.Text>press</Native.Text>  
+              </Native.TouchableOpacity>
+            ); 
+            
+           setOfCircles.push(
+            <Native.TouchableOpacity onPress={() => testAlert()}>
+              <Native.View style={circleStyle(rotatedX, rotatedY, this.props.NoInputColour)}/>
+            </Native.TouchableOpacity>);
+            */
+
             counterList[0]++;
             todaysColour = this.props.NoInputColour;
             break;
@@ -156,6 +180,7 @@ export default class SymptomCircle extends React.Component
                   <Native.View style={circleStyle(-25, 10,this.props.NoInputColour)}/>
                 </Native.View>
 
+              
                 <Native.View style={{width: 100, height: 50, position:"absolute", top: progressBarY + 350, left: progressBarX + 10}}>
                   <Native.Text style={{ fontSize: 18, textAlign: 'center' }}>{ counterList[3] == 1? counterList[3] + " Day\nSymptoms Only" : counterList[3] + " Day's\nSymptoms Only"}</Native.Text>
                   <Native.View style={circleStyle(-25, 10,this.props.SymptomOnlyColour)}/>
