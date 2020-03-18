@@ -5,9 +5,16 @@ import ProgressCircle from 'react-native-progress-circle';
 
 
 
-let m_numDaysCurrentMonth = moment( moment().format().substring(0,7) , "YYYY-MM").daysInMonth();
+
+let m_numDaysCurrentMonth;
+
+
+m_numDaysCurrentMonth = moment( moment().format().substring(0,7) , "YYYY-MM").daysInMonth()
+
+
 let m_dateDayNum = moment().format("D");
 let m_dateDay = moment().format("Do");
+
 
 let m_circlePercent  = (Number(m_dateDayNum) / Number(m_numDaysCurrentMonth) * 100);
 
@@ -16,41 +23,51 @@ let dayAngleRad = (dayAngleDeg * (Math.PI / 180));
 
 
 
-let smallCircleRadius = 10;
-let percentCircleRadius = 120;
-let percetnBorderWidth = 30;
-let progressBarX = 85;
-let progressBarY = 120;
-
-
-
-let centerX = progressBarX + (percentCircleRadius - smallCircleRadius);
-let centerY = progressBarY + (percentCircleRadius - smallCircleRadius);
-
-let circleX = centerX;
-let circleY = centerY - (percentCircleRadius - (smallCircleRadius * 1.5));
-
-let rotatedX = roteX(circleX,circleY,centerX,centerY, (dayAngleRad/2));
-let rotatedY = roteY(circleX,circleY,centerX,centerY, (dayAngleRad/2));
-
-
 
 function roteX(posX,posY, centX,centY, angleRad)
-{
-  return(Math.cos(angleRad) * (posX - centX) - Math.sin(angleRad) * (posY - centY) + centX);
-}
+{       
+    return(Math.cos(angleRad) * (posX - centX) - Math.sin(angleRad) * (posY - centY) + centX);
+}   
 
 function roteY(posX,posY, centX,centY, angleRad)
 {
-  return (Math.sin(angleRad) * (posX - centX) + Math.cos(angleRad) * (posY -centY) + centY);
+ return (Math.sin(angleRad) * (posX - centX) + Math.cos(angleRad) * (posY -centY) + centY);
 }
+
+
 
 
 
 export default class SymptomCircle extends React.Component
 {
-    render() {
   
+    render() {
+
+      let smallCircleRadius = this.props.progBarSmallRadius;
+      let percentCircleRadius = this.props.progBarBigRadius;
+      let percetnBorderWidth = this.props.progBarBorderWidth;
+      let progressBarX = this.props.progBarX;
+      let progressBarY = this.props.progBarY;
+      
+      
+      
+      let centerX = progressBarX + (percentCircleRadius - smallCircleRadius);
+      let centerY = progressBarY + (percentCircleRadius - smallCircleRadius);
+      
+      let circleX = centerX;
+      let circleY = centerY - (percentCircleRadius - (smallCircleRadius * 1.5));
+      
+      let rotatedX = roteX(circleX,circleY,centerX,centerY, (dayAngleRad/2));
+      let rotatedY = roteY(circleX,circleY,centerX,centerY, (dayAngleRad/2));
+
+
+
+      let counterList = [0,0,0,0];
+      let todaysColour ='';
+      
+      var colourManager = [];
+      colourManager = this.props.colourInfoList;
+
       let setOfCircles = [];
 
       circleStyle = function(x, y, color) {
@@ -65,50 +82,84 @@ export default class SymptomCircle extends React.Component
         }
       }
 
-      for(let i = 1; i <= (Number(m_dateDayNum)); i++){
+      var CircleLoopCounter = 1;
+      colourManager.forEach(element=>{
+        switch (element) {
+          case 0:
+            setOfCircles.push(<Native.View style={circleStyle(rotatedX, rotatedY, this.props.NoInputColour)}/>);
+            counterList[0]++;
+            todaysColour = this.props.NoInputColour;
+            break;
+          case 1:
+            setOfCircles.push(<Native.View style={circleStyle(rotatedX, rotatedY, this.props.GlutenColour)}/>);
+            counterList[1]++;
+            todaysColour = this.props.GlutenColour;
+            break;
+          case 2:
+            setOfCircles.push(<Native.View style={circleStyle(rotatedX, rotatedY, this.props.NoGlutenColour)}/>)
+            counterList[2]++;
+            todaysColour = this.props.NoGlutenColour;
+              break;
+          case 3:
+            setOfCircles.push(<Native.View style={circleStyle(rotatedX, rotatedY, this.props.SymptomOnlyColour)}/>)
+            counterList[3]++;
+            todaysColour = this.props.SymptomOnlyColour;
+              break;
+          default:
+            break;
+        }
+        rotatedX = roteX(circleX,circleY,centerX,centerY, (dayAngleRad * CircleLoopCounter) + dayAngleRad/2 );
+        rotatedY = roteY(circleX,circleY,centerX,centerY, (dayAngleRad * CircleLoopCounter) + dayAngleRad/2 );
+        CircleLoopCounter++;
 
-        setOfCircles.push(
-          <Native.View style={circleStyle(rotatedX, rotatedY,'blue')}/>
-        )
+      })
 
-        rotatedX = roteX(circleX,circleY,centerX,centerY, (dayAngleRad * i) + dayAngleRad/2 );
-        rotatedY = roteY(circleX,circleY,centerX,centerY, (dayAngleRad * i) + dayAngleRad/2 );
-      }
 
         return (
             <Native.View style={styles.MainContainer}>
 
-              <Native.View style={styles.circleLocal}>
+              <Native.View style={{position:"absolute", top: progressBarY, left: progressBarX }}>
+
                 <ProgressCircle
                       percent={m_circlePercent }
                       radius={percentCircleRadius}
                       borderWidth={percetnBorderWidth}
-                      color="#3399FF"
-                      shadowColor="#999"
-                      bgColor="#fff"
+                      color = {this.props.FinishedBackGroundColour}
+                      shadowColor={this.props.UnfinishedBackGroundColour}
+                      bgColor={this.props.InsideCircleBGColour}
                   >
-                   <Native.Text style={{ fontSize: 18 }}>{"Month View"}</Native.Text>
+                   {/* <Native.Text style={{ fontSize: 18 }}>{"21 Day Challenge"}</Native.Text> */}
+                    
                   </ProgressCircle>
                 </Native.View>
+
+               
+
                 {setOfCircles} 
 
+                    <Native.View style={{ width: 100, height: 50, backgroundColor: todaysColour, borderRadius:20 ,position:"absolute", top: progressBarY - 60, left: progressBarX + 80}}>
+                      <Native.Text style={{ fontSize: 18, textAlign: 'center', marginTop: 10 , color:'white'}}>{m_dateDay + " Day"}</Native.Text>
+                    </Native.View>
 
-                <Native.View style={styles.square}>
-                  <Native.Text style={{ fontSize: 18, textAlign: 'center', marginTop: 10 }}>{m_dateDay + " Day"}</Native.Text>
+                <Native.View style={{width: 100, height: 50, position:"absolute", top: progressBarY + 275, left: progressBarX + 10}}>
+                  <Native.Text style={{ fontSize: 18, textAlign: 'center' }}>{ counterList[2] == 1?  counterList[2] + " Day\nNo Gluten" : counterList[2] + " Day's\nNo Gluten"}</Native.Text>
+                  <Native.View style={circleStyle(-25, 10, this.props.NoGlutenColour)}/>
                 </Native.View>
 
-
-
-                <Native.View style={styles.TextBoxNoGluten}>
-                  <Native.Text style={{ fontSize: 18, textAlign: 'center' }}>{m_dateDay + " Day's\nNo Gluten"}</Native.Text>
-                  <Native.View style={circleStyle(-25, 10,'green')}/>
+                <Native.View style={{width: 100, height: 50, position:"absolute", top: progressBarY + 275, left: progressBarX + 160}}>
+                  <Native.Text style={{ fontSize: 18, textAlign: 'center' }}>{ counterList[1] == 1? counterList[1] + " Day\nGluten" : counterList[1] + " Day's\nGluten"}</Native.Text>
+                  <Native.View style={circleStyle(-25, 10,this.props.GlutenColour)}/>
                 </Native.View>
 
-                <Native.View style={styles.TextBoxGluten}>
-                  <Native.Text style={{ fontSize: 18, textAlign: 'center' }}>{m_dateDay + " Day's\nGluten"}</Native.Text>
-                  <Native.View style={circleStyle(-25, 10,'red')}/>
+                <Native.View style={{width: 100, height: 50, position:"absolute", top: progressBarY + 350, left: progressBarX + 160}}>
+                  <Native.Text style={{ fontSize: 18, textAlign: 'center' }}>{ counterList[0] == 1? counterList[0] + " Day\nNo Entry" : counterList[0] + " Day's\nNo Entry"}</Native.Text>
+                  <Native.View style={circleStyle(-25, 10,this.props.NoInputColour)}/>
                 </Native.View>
 
+                <Native.View style={{width: 100, height: 50, position:"absolute", top: progressBarY + 350, left: progressBarX + 10}}>
+                  <Native.Text style={{ fontSize: 18, textAlign: 'center' }}>{ counterList[3] == 1? counterList[3] + " Day\nSymptoms Only" : counterList[3] + " Day's\nSymptoms Only"}</Native.Text>
+                  <Native.View style={circleStyle(-25, 10,this.props.SymptomOnlyColour)}/>
+                </Native.View>
 
             </Native.View>
         );
@@ -118,39 +169,10 @@ export default class SymptomCircle extends React.Component
 
 const styles = Native.StyleSheet.create({
     MainContainer:
-        {
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: '#FFFFFF',
-        },   
-        circleLocal:{
-          position:"absolute",
-          top: progressBarY,
-          left: progressBarX 
-        },
-        square: {
-          width: 100,
-          height: 50,
-          backgroundColor: 'red',
-          position:"absolute",
-          top: progressBarY - 60,
-          left: progressBarX + 70
-      },
-
-      TextBoxNoGluten: {
-        width: 100,
-        height: 50,
-        position:"absolute",
-        top: progressBarY + 300,
-        left: progressBarX
-    },
-
-    TextBoxGluten: {
-      width: 100,
-      height: 50,
-      position:"absolute",
-      top: progressBarY + 300,
-      left: progressBarX + 150
-  },
+    {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#FFFFFF',
+    },   
 });

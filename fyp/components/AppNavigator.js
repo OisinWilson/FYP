@@ -2,12 +2,12 @@
 import { createStackNavigator } from 'react-navigation-stack';
 import HomeScreen from './HomeScreen';
 import CalendarScreen from './Calendar';
-import SymptomCircle from './SymptomCircleView'
+import CircleViewManager from './CircleViewManager'
 
 const AppNavigator = createStackNavigator({
   Home: { screen: HomeScreen },
   Calendar: { screen: CalendarScreen},
-  SCV: {screen: SymptomCircle}
+  SCV: {screen: CircleViewManager}
 });
 
 export default  AppNavigator;
