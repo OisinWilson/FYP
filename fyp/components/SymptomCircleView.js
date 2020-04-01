@@ -15,6 +15,8 @@ m_numDaysCurrentMonth = moment( moment().format().substring(0,7) , "YYYY-MM").da
 let m_dateDayNum = moment().format("D");
 let m_dateDay = moment().format("Do");
 
+m_dateDayNum = 16;  //----------------------------------------------------------------------------------
+m_dateDay = "16th";  //----------------------------------------------------------------------------------
 
 let m_circlePercent  = (Number(m_dateDayNum) / Number(m_numDaysCurrentMonth) * 100);
 
@@ -82,22 +84,18 @@ export default class SymptomCircle extends React.Component
         }
       }
 
-      /*
+      
       const testAlert=()=>{
-        alert("test")
+        Native.Alert.alert("test")
       }
-      */
+      
 
       var CircleLoopCounter = 1;
       colourManager.forEach(element=>{
         switch (element) {
           case 0:
             /*
-            setOfCircles.push(<Native.View style={circleStyle(rotatedX, rotatedY, this.props.NoInputColour)}>
-                                <Native.TouchableOpacity style={zIndex = 1} onPress={this.onPress}>
-                                  <Native.Text>y</Native.Text>
-                                </Native.TouchableOpacity>
-                              </Native.View>);
+ 
             
             setOfCircles.push(
               <Native.TouchableOpacity onPress={() => testAlert()} style={circleStyle(rotatedX, rotatedY, this.props.NoInputColour)}>
@@ -106,10 +104,16 @@ export default class SymptomCircle extends React.Component
             ); 
             
            setOfCircles.push(
-            <Native.TouchableOpacity onPress={() => testAlert()}>
+            <Native.TouchableOpacity onPress={() => testAlert}>
               <Native.View style={circleStyle(rotatedX, rotatedY, this.props.NoInputColour)}/>
             </Native.TouchableOpacity>);
             */
+
+           setOfCircles.push(<Native.View style={circleStyle(rotatedX, rotatedY, this.props.NoInputColour)}>
+                                <Native.TouchableOpacity style={zIndex = 1} onPress={() => testAlert()}>
+                                  <Native.Text>X</Native.Text>
+                                </Native.TouchableOpacity>
+                              </Native.View>);
 
             counterList[0]++;
             todaysColour = this.props.NoInputColour;

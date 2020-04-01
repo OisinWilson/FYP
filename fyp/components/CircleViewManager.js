@@ -19,6 +19,7 @@ export default class CircleViewManager extends React.Component {
 
         let m_loopNum = new Date().getUTCDate();
 
+        m_loopNum = 16;//----------------------------------------------------------------------
 
         if (m_dateStack.length > 0)
         {
