@@ -1,10 +1,48 @@
 import * as React from 'react';
 import * as Native from 'react-native';
 import * as Chart from 'victory-native';
+import DatabaseManager from './DataBaseManager';
+
 
 export default class ChartViewManager extends React.Component{
   
+      componentDidMount()
+      {
+        //DatabaseManager.getInstance().insertToTable(
+        //  'Hello Test 1',
+        //  (_, error) => {alert(error)},
+        //  console.log("Sucessful input")
+        //);
+
+        //DatabaseManager.getInstance().updateTestTable(
+        //  'Changed stuff',
+        //  (_, error) => {alert(error)},
+        //  console.log("Sucessful update")
+        //);
+
+        //DatabaseManager.getInstance().DropItAll(
+        //  (_, error) => {alert(error)},
+        //  console.log("Droped Test Table")
+        //);
+
+        //DatabaseManager.getInstance().DeleteItAll(
+        //  (_, error) => {alert(error)},
+        //  console.log("Delete Test Table Contenets")
+        //);
+
+        DatabaseManager.getInstance().GetTableData(
+          'symptoms',
+          (_, error) => {alert(error)},
+          (_, {rows: { _array }}) => (
+            _array.forEach(element => {
+              console.log(element);
+            }
+          ))
+        );
+      }
+
       render() {
+
 
         let data = [
             { quarter: 1, earnings: 13000 },

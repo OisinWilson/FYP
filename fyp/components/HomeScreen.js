@@ -72,6 +72,14 @@ export default class HomeScreen extends React.Component {
               />
           </View>
 
+          <View style={[{ width: "60%", margin: 4 }]}>
+              <Button
+              title="Input"
+              color= "#ECA37A"
+              onPress={() => navigate('INPUT')}
+              />
+          </View>
+
   
           <View style={styles.bottomView}>
             <View style={[{ width: "90%", margin: 4 }]}>

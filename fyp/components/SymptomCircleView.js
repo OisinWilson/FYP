@@ -5,7 +5,6 @@ import ProgressCircle from 'react-native-progress-circle';
 
 
 
-
 let m_numDaysCurrentMonth;
 
 
