@@ -8,37 +8,13 @@ export default class ChartViewManager extends React.Component{
   
       componentDidMount()
       {
-        //DatabaseManager.getInstance().insertToTable(
-        //  'Hello Test 1',
-        //  (_, error) => {alert(error)},
-        //  console.log("Sucessful input")
-        //);
-
-        //DatabaseManager.getInstance().updateTestTable(
-        //  'Changed stuff',
-        //  (_, error) => {alert(error)},
-        //  console.log("Sucessful update")
-        //);
-
-        //DatabaseManager.getInstance().DropItAll(
-        //  (_, error) => {alert(error)},
-        //  console.log("Droped Test Table")
-        //);
-
-        //DatabaseManager.getInstance().DeleteItAll(
-        //  (_, error) => {alert(error)},
-        //  console.log("Delete Test Table Contenets")
-        //);
-
-        DatabaseManager.getInstance().GetTableData(
-          'symptoms',
-          (_, error) => {alert(error)},
+        DatabaseManager.getInstance().fetchEvents(
+          new Date().UTC,
+          (_, error) => {alert(error)}, 
           (_, {rows: { _array }}) => (
             _array.forEach(element => {
               console.log(element);
-            }
-          ))
-        );
+            })))
       }
 
       render() {

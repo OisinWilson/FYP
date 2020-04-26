@@ -3,18 +3,22 @@ import React from 'react';
 import Native from 'react-native';
 import SymptomCircle from './SymptomCircleView';
 import moment from 'moment';
+import DatabaseManager from './DataBaseManager';
+
 
 let m_dateStack = [];
 
-
 export default class CircleViewManager extends React.Component {
 
+    
     CircleViewManager(){
-        
+      
     }
 
     componentDidMount()
     {
+        m_dateStack = [];
+        /*
         const self = this;
 
         let m_loopNum = new Date().getUTCDate();
@@ -32,7 +36,53 @@ export default class CircleViewManager extends React.Component {
         }
 
         this.setState({data:m_dateStack})
+        */
 
+       let maxDateValue = new Date().getUTCDate()
+
+       for (let i = 0; i <= maxDateValue; i++)
+       {
+         m_dateStack.push(0);
+       }
+           // Numbers for circle colours
+           // 0 == No Input 
+           // 1 == gluten
+           // 2 == no gluten
+           // 3 == Just Symptoms
+
+       DatabaseManager.getInstance().fetchEvents(
+         new Date().UTC,
+         (_, error) => {alert(error)}, 
+         (_, {rows: { _array }}) => (
+           _array.forEach(element => {
+             if( (new Date (element.created).getUTCMonth()) == new Date().getUTCMonth()
+              && (new Date (element.created).getUTCFullYear()) == new Date().getUTCFullYear()
+              && (new Date (element.created).getUTCDate()) <= maxDateValue)
+              {
+                 if (element.symptomId == 2)
+                 {
+                   if (element.objData[11] == 'Y')
+                   { //gluten
+                     m_dateStack[new Date (element.created).getUTCDate()] = 1;
+                   }
+                   else if (element.objData[11] == 'N')
+                   { //no gluten
+                     m_dateStack[new Date (element.created).getUTCDate()] = 2;
+                   }
+                 }
+                 else if (element.symptomId == 0)
+                 {  // only symptoms
+                   if (m_dateStack[new Date (element.created).getUTCDate()] == 0)
+                   {
+                       m_dateStack[new Date (element.created).getUTCDate()] = 3;
+                   }
+                 }
+              }
+           }),
+
+           this.setState({data: _array})
+         )
+       )
     }
 
     render() {
@@ -40,7 +90,7 @@ export default class CircleViewManager extends React.Component {
         return(
             <Native.View style={styles.MainContainer}>
 
-                {this.state &&
+                { this.state && this.state.data &&
                         <SymptomCircle colourInfoList={m_dateStack}
                             progBarX={-140}
                             progBarY={130}

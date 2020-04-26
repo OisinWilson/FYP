@@ -1,7 +1,3 @@
-
-
-
-
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -9,7 +5,9 @@ import {
   View
 } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
- 
+import DatabaseManager from './DataBaseManager';
+
+
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -27,6 +25,8 @@ export default class App extends Component {
   render() {
     const { selectedStartDate } = this.state;
     const startDate = selectedStartDate ? selectedStartDate.toString() : '';
+    
+    
     return (
       <View style={styles.container}>
         <CalendarPicker
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    marginTop: 100,
+    marginTop: 20,
   },
 });
 

@@ -7,7 +7,8 @@ import BranchView from './BranchView';
 import ChartViewManager from './ChartViewManager';
 import PiView from './pi';
 import PolarView from './polar';
-import InputScreen from './InputScreen';
+import SymptomInputScreen from './SymptomInputScreen';
+import InputScreen from './InputManager';
 
 const AppNavigator = createStackNavigator({
   Home: { screen: HomeScreen },
@@ -17,6 +18,7 @@ const AppNavigator = createStackNavigator({
   CV: {screen: ChartViewManager},
   PI: {screen:PiView},
   PO: {screen: PolarView},
+  INPUTSYMP: {screen: SymptomInputScreen},
   INPUT: {screen: InputScreen},
 });
 

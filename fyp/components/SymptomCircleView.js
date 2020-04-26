@@ -5,17 +5,14 @@ import ProgressCircle from 'react-native-progress-circle';
 
 
 
-let m_numDaysCurrentMonth;
-
-
-m_numDaysCurrentMonth = moment( moment().format().substring(0,7) , "YYYY-MM").daysInMonth()
+let m_numDaysCurrentMonth = moment( moment().format().substring(0,7) , "YYYY-MM").daysInMonth()
 
 
 let m_dateDayNum = moment().format("D");
 let m_dateDay = moment().format("Do");
 
-m_dateDayNum = 16;  //----------------------------------------------------------------------------------
-m_dateDay = "16th";  //----------------------------------------------------------------------------------
+//m_dateDayNum = 16;  //----------------------------------------------------------------------------------
+//m_dateDay = "16th";  //----------------------------------------------------------------------------------
 
 let m_circlePercent  = (Number(m_dateDayNum) / Number(m_numDaysCurrentMonth) * 100);
 
@@ -89,7 +86,7 @@ export default class SymptomCircle extends React.Component
       }
       
 
-      var CircleLoopCounter = 1;
+      var CircleLoopCounter = 0;
       colourManager.forEach(element=>{
         switch (element) {
           case 0:
@@ -108,27 +105,27 @@ export default class SymptomCircle extends React.Component
             </Native.TouchableOpacity>);
             */
 
-           setOfCircles.push(<Native.View style={circleStyle(rotatedX, rotatedY, this.props.NoInputColour)}>
-                                <Native.TouchableOpacity style={zIndex = 1} onPress={() => testAlert()}>
-                                  <Native.Text>X</Native.Text>
-                                </Native.TouchableOpacity>
-                              </Native.View>);
-
+           //setOfCircles.push(<Native.View style={circleStyle(rotatedX, rotatedY, this.props.NoInputColour)}>
+                         //       <Native.TouchableOpacity style={zIndex = 1} onPress={() => testAlert()}>
+                          //        <Native.Text>X</Native.Text>
+                           //     </Native.TouchableOpacity>
+                           //   </Native.View>);
+            setOfCircles.push(<Native.View style={circleStyle(rotatedX, rotatedY, this.props.NoInputColour)} key={CircleLoopCounter}/>);
             counterList[0]++;
             todaysColour = this.props.NoInputColour;
             break;
           case 1:
-            setOfCircles.push(<Native.View style={circleStyle(rotatedX, rotatedY, this.props.GlutenColour)}/>);
+            setOfCircles.push(<Native.View style={circleStyle(rotatedX, rotatedY, this.props.GlutenColour)} key={CircleLoopCounter}/>);
             counterList[1]++;
             todaysColour = this.props.GlutenColour;
             break;
           case 2:
-            setOfCircles.push(<Native.View style={circleStyle(rotatedX, rotatedY, this.props.NoGlutenColour)}/>)
+            setOfCircles.push(<Native.View style={circleStyle(rotatedX, rotatedY, this.props.NoGlutenColour)} key={CircleLoopCounter}/>)
             counterList[2]++;
             todaysColour = this.props.NoGlutenColour;
               break;
           case 3:
-            setOfCircles.push(<Native.View style={circleStyle(rotatedX, rotatedY, this.props.SymptomOnlyColour)}/>)
+            setOfCircles.push(<Native.View style={circleStyle(rotatedX, rotatedY, this.props.SymptomOnlyColour)} key={CircleLoopCounter}/>)
             counterList[3]++;
             todaysColour = this.props.SymptomOnlyColour;
               break;
@@ -143,8 +140,9 @@ export default class SymptomCircle extends React.Component
 
 
         return (
+       
             <Native.View style={styles.MainContainer}>
-
+            
               <Native.View style={{position:"absolute", top: progressBarY, left: progressBarX }}>
 
                 <ProgressCircle
@@ -154,11 +152,8 @@ export default class SymptomCircle extends React.Component
                       color = {this.props.FinishedBackGroundColour}
                       shadowColor={this.props.UnfinishedBackGroundColour}
                       bgColor={this.props.InsideCircleBGColour}
-                  >
-                   {/* <Native.Text style={{ fontSize: 18 }}>{"21 Day Challenge"}</Native.Text> */}
-                    
-                  </ProgressCircle>
-                </Native.View>
+                  />
+              </Native.View>
 
                
 
@@ -168,28 +163,29 @@ export default class SymptomCircle extends React.Component
                       <Native.Text style={{ fontSize: 18, textAlign: 'center', marginTop: 10 , color:'white'}}>{m_dateDay + " Day"}</Native.Text>
                     </Native.View>
 
-                <Native.View style={{width: 100, height: 50, position:"absolute", top: progressBarY + 275, left: progressBarX + 10}}>
+                <Native.View style={{width: 100, height: 50, position:"absolute", top: progressBarY + 275, left: progressBarX + 30}}>
                   <Native.Text style={{ fontSize: 18, textAlign: 'center' }}>{ counterList[2] == 1?  counterList[2] + " Day\nNo Gluten" : counterList[2] + " Day's\nNo Gluten"}</Native.Text>
                   <Native.View style={circleStyle(-25, 10, this.props.NoGlutenColour)}/>
                 </Native.View>
 
-                <Native.View style={{width: 100, height: 50, position:"absolute", top: progressBarY + 275, left: progressBarX + 160}}>
+                <Native.View style={{width: 100, height: 50, position:"absolute", top: progressBarY + 275, left: progressBarX + 180}}>
                   <Native.Text style={{ fontSize: 18, textAlign: 'center' }}>{ counterList[1] == 1? counterList[1] + " Day\nGluten" : counterList[1] + " Day's\nGluten"}</Native.Text>
                   <Native.View style={circleStyle(-25, 10,this.props.GlutenColour)}/>
                 </Native.View>
 
-                <Native.View style={{width: 100, height: 50, position:"absolute", top: progressBarY + 350, left: progressBarX + 160}}>
+                <Native.View style={{width: 100, height: 50, position:"absolute", top: progressBarY + 350, left: progressBarX + 180}}>
                   <Native.Text style={{ fontSize: 18, textAlign: 'center' }}>{ counterList[0] == 1? counterList[0] + " Day\nNo Entry" : counterList[0] + " Day's\nNo Entry"}</Native.Text>
                   <Native.View style={circleStyle(-25, 10,this.props.NoInputColour)}/>
                 </Native.View>
 
-              
-                <Native.View style={{width: 100, height: 50, position:"absolute", top: progressBarY + 350, left: progressBarX + 10}}>
+               
+                <Native.View style={{width: 100, height: 50, position:"absolute", top: progressBarY + 350, left: progressBarX + 30}}>
                   <Native.Text style={{ fontSize: 18, textAlign: 'center' }}>{ counterList[3] == 1? counterList[3] + " Day\nSymptoms Only" : counterList[3] + " Day's\nSymptoms Only"}</Native.Text>
                   <Native.View style={circleStyle(-25, 10,this.props.SymptomOnlyColour)}/>
                 </Native.View>
-
+             
             </Native.View>
+           
         );
     }
 }
