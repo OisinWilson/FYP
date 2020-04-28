@@ -1,3 +1,7 @@
+//Author : Oisin Wilson (C00213826)
+// This is the render part of the custom made 'Circle Display' component
+//  This displays a number of circles reletive to the date in a criclar motion  
+
 import * as React from 'react';
 import * as Native from 'react-native';
 import moment from 'moment';
@@ -5,14 +9,11 @@ import ProgressCircle from 'react-native-progress-circle';
 
 
 
+// This sets up constants so that the number of days in the month can be divided into the degrees of a circle
 let m_numDaysCurrentMonth = moment( moment().format().substring(0,7) , "YYYY-MM").daysInMonth()
-
 
 let m_dateDayNum = moment().format("D");
 let m_dateDay = moment().format("Do");
-
-//m_dateDayNum = 16;  //----------------------------------------------------------------------------------
-//m_dateDay = "16th";  //----------------------------------------------------------------------------------
 
 let m_circlePercent  = (Number(m_dateDayNum) / Number(m_numDaysCurrentMonth) * 100);
 
@@ -21,17 +22,17 @@ let dayAngleRad = (dayAngleDeg * (Math.PI / 180));
 
 
 
-
+// X point rotation
 function roteX(posX,posY, centX,centY, angleRad)
 {       
     return(Math.cos(angleRad) * (posX - centX) - Math.sin(angleRad) * (posY - centY) + centX);
 }   
 
+// Y point rotation
 function roteY(posX,posY, centX,centY, angleRad)
 {
  return (Math.sin(angleRad) * (posX - centX) + Math.cos(angleRad) * (posY -centY) + centY);
 }
-
 
 
 
@@ -59,14 +60,15 @@ export default class SymptomCircle extends React.Component
 
 
 
-      let counterList = [0,0,0,0];
+      let counterList = [0,0,0,0];  //This is for the ledgend under the main display
       let todaysColour ='';
       
-      var colourManager = [];
+      var colourManager = []; //This has the bulk of the data passed to it 
       colourManager = this.props.colourInfoList;
 
-      let setOfCircles = [];
+      let setOfCircles = [];  //This is where the Circles are stored
 
+      // This is to dynamically change the number of circles
       circleStyle = function(x, y, color) {
         return {
             zIndex : 1,
@@ -86,30 +88,11 @@ export default class SymptomCircle extends React.Component
       }
       
 
+      //This is the main loop that determins the circles colour, position and rotation
       var CircleLoopCounter = 0;
       colourManager.forEach(element=>{
         switch (element) {
           case 0:
-            /*
- 
-            
-            setOfCircles.push(
-              <Native.TouchableOpacity onPress={() => testAlert()} style={circleStyle(rotatedX, rotatedY, this.props.NoInputColour)}>
-                <Native.Text>press</Native.Text>  
-              </Native.TouchableOpacity>
-            ); 
-            
-           setOfCircles.push(
-            <Native.TouchableOpacity onPress={() => testAlert}>
-              <Native.View style={circleStyle(rotatedX, rotatedY, this.props.NoInputColour)}/>
-            </Native.TouchableOpacity>);
-            */
-
-           //setOfCircles.push(<Native.View style={circleStyle(rotatedX, rotatedY, this.props.NoInputColour)}>
-                         //       <Native.TouchableOpacity style={zIndex = 1} onPress={() => testAlert()}>
-                          //        <Native.Text>X</Native.Text>
-                           //     </Native.TouchableOpacity>
-                           //   </Native.View>);
             setOfCircles.push(<Native.View style={circleStyle(rotatedX, rotatedY, this.props.NoInputColour)} key={CircleLoopCounter}/>);
             counterList[0]++;
             todaysColour = this.props.NoInputColour;
@@ -190,7 +173,7 @@ export default class SymptomCircle extends React.Component
     }
 }
 
-
+//Css styles
 const styles = Native.StyleSheet.create({
     MainContainer:
     {

@@ -1,3 +1,6 @@
+//Author : Oisin Wilson (C00213826)
+// this is for inputting a symptom list to the database
+
 import * as React from 'react';
 import * as Native from 'react-native';
 import DatabaseManager from './DataBaseManager';
@@ -23,6 +26,8 @@ export default class SymptomInputScreen extends React.Component{
      
       render() {
         const {navigate} = this.props.navigation;
+
+
         return (
           <Native.View style={styles.container}>
              
@@ -169,7 +174,7 @@ export default class SymptomInputScreen extends React.Component{
     } 
 
 
-
+// Css styles
     const styles = Native.StyleSheet.create(
       {
           container:
@@ -180,202 +185,3 @@ export default class SymptomInputScreen extends React.Component{
           }
       }
     );
-
-
-
-/*
-export default class InputScreen extends React.Component{
-  state={
-    selectedLang:0
-  }
-  render(){
-    return (
-      <Native.View style={styles.container}>
-        <Native.Text style={styles.header}>What's your favorite programming language?</Native.Text>
-        <Native.View style={styles.item} >
-            <CheckBox checked={this.state.selectedLang===1} color="#fc5185" onPress={()=>this.setState({selectedLang:1})}/>
-            <Native.Text style={
-              {...styles.checkBoxTxt,
-                color:this.state.selectedLang===1?"#fc5185":"gray",
-                fontWeight:this.state.selectedLang===1? "bold" :"normal"
-              }}
-              >Python</Native.Text>
-        </Native.View>
-        <Native.View style={styles.item}>
-            <CheckBox checked={this.state.selectedLang===2} color="#fc5185" onPress={()=>this.setState({selectedLang:2})}/>
-            <Native.Text style={
-              {...styles.checkBoxTxt,
-                color:this.state.selectedLang===2?"#fc5185":"gray",
-                fontWeight:this.state.selectedLang===2? "bold" :"normal"
-              }}
-              >Javascript</Native.Text>
-        </Native.View>
-        <Native.View style={styles.item}>
-            <CheckBox checked={this.state.selectedLang===3} color="#fc5185" onPress={()=>this.setState({selectedLang:3})}/>
-            <Native.Text style={
-              {...styles.checkBoxTxt,
-                color:this.state.selectedLang===3?"#fc5185":"gray",
-                fontWeight:this.state.selectedLang===3? "bold" :"normal"
-              }}
-              >Php</Native.Text>
-        </Native.View>
-        <Native.View style={styles.item}>
-            <CheckBox checked={this.state.selectedLang===4} color="#fc5185" onPress={()=>this.setState({selectedLang:4})}/>
-            <Native.Text style={
-              {...styles.checkBoxTxt,
-                color:this.state.selectedLang===4?"#fc5185":"gray",
-                fontWeight:this.state.selectedLang===4? "bold" :"normal"
-              }}
-              >C#</Native.Text>
-        </Native.View>
-        <Native.TouchableOpacity style={styles.submit}>
-          <Native.Text style={{color:"white"}}>SUBMIT</Native.Text>
-        </Native.TouchableOpacity>
-  
-  
-      </Native.View>
-    );
-  }
-  
-}
-
-const styles = Native.StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f6f6f6',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  header:{
-    fontSize:25,
-    fontWeight:"bold",
-    color:"#364f6b",
-    marginBottom:40
-  },
-  item:{
-    width:"80%",
-    backgroundColor:"#fff",
-    borderRadius:20,
-    padding:10,
-    marginBottom:10,
-    flexDirection:"row",
-  },
-  checkBoxTxt:{
-    marginLeft:20
-  },
-  submit:{
-    width:"80%",
-    backgroundColor:"#fc5185",
-    borderRadius:20,
-    padding:10,
-    alignItems:"center",
-    marginTop:40
-  }
-});
-
-
-            <CheckBox title='Click Here'
-                checked={beep} 
-                onPress={() => {beep=!beep}}/>
-
-            
-            <CheckBox  style={{flex: 0, padding: 0}}
-              onClick={()=>{
-                this.setState({
-                    isChecked:!this.state.isChecked
-                })
-              }}
-              isChecked={this.state.isChecked}/>
-                
-                        
-              
-                <CheckBox  style={{flex: 0, padding: 0}}
-              onClick={()=>{
-                this.setState({
-                  isChecked:!this.state.isChecked
-                })
-              }}
-              isChecked={this.state.isChecked}/>
-                  
-            
-
-
-                
-                  < Native.View style={[{ width: "60%", margin: 4 }]}>
-                        <Native.Button
-                        title="Input Symptom Test"
-                        color='#ECA37A'
-                        
-                        onPress={() => DatabaseManager.getInstance().createSymptomEvent(
-                            1,
-                            "This is a test Note",
-                            Date.now(),
-                            (_, error) => {alert(error)},
-                            
-                            )}
-                        />
-                    </Native.View>
-
-
-
-                    < Native.View style={[{ width: "60%", margin: 4 }]}>
-                        <Native.Button
-                        title="Output Symptom Test"
-                        color='#ECA37A'
-                        
-                        onPress={() => DatabaseManager.getInstance().fetchEvents(
-
-                            new Date().UTC,
-                            (_, error) => {alert(error)},
-                            (_, {rows: { _array }}) => (
-                              _array.forEach(element => {
-                                console.log(element);
-                              }
-                            ))
-                            )}
-                        />
-                    </Native.View>
-
-
-
-
-
-
-                    < Native.View style={[{ width: "60%", margin: 4 }]}>
-                        <Native.Button
-                        title="delete table contentes"
-                        color='#ECA37A'
-                        
-                        onPress={() => DatabaseManager.getInstance().DeleteAllFromTable(
-                            "events",
-                            (_, error) => {alert(error)},
-                            (_, {rows: { _array }}) => (
-                              _array.forEach(element => {
-                                console.log(element);
-                              }
-                            ))
-                            )}
-                        />
-                    </Native.View>
-
-
-                    < Native.View style={[{ width: "60%", margin: 4 }]}>
-                        <Native.Button
-                        title="delete table contentes"
-                        color='#ECA37A'
-                        
-                        onPress={() => DatabaseManager.getInstance().DeleteFromTable(
-                            "events",
-                            4,
-                            (_, error) => {alert(error)},
-                            (_, {rows: { _array }}) => (
-                              _array.forEach(element => {
-                                console.log(element);
-                              }
-                            ))
-                            )}
-                        />
-                    </Native.View>
-                            */
-
-                            

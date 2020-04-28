@@ -1,8 +1,10 @@
+//Author : Oisin Wilson (C00213826)
+// This is the data part of the custom made 'Circle Display' component
+// This segment takes the relevent data from the database and passes it to the rendering part of the component 
 
 import React from 'react';
 import Native from 'react-native';
 import SymptomCircle from './SymptomCircleView';
-import moment from 'moment';
 import DatabaseManager from './DataBaseManager';
 
 
@@ -10,35 +12,14 @@ let m_dateStack = [];
 
 export default class CircleViewManager extends React.Component {
 
-    
-    CircleViewManager(){
-      
-    }
-
     componentDidMount()
     {
         m_dateStack = [];
-        /*
-        const self = this;
 
-        let m_loopNum = new Date().getUTCDate();
+       let maxDateValue = new Date().getDate();
 
-        m_loopNum = 16;//----------------------------------------------------------------------
+       
 
-        if (m_dateStack.length > 0)
-        {
-            m_dateStack =[];
-        }
-
-        for (var i = 1; i <= m_loopNum; i++)
-        {
-            m_dateStack.push(Math.floor(Math.random() * Math.floor(4)));
-        }
-
-        this.setState({data:m_dateStack})
-        */
-
-       let maxDateValue = new Date().getUTCDate()
 
        for (let i = 0; i <= maxDateValue; i++)
        {
@@ -55,9 +36,9 @@ export default class CircleViewManager extends React.Component {
          (_, error) => {alert(error)}, 
          (_, {rows: { _array }}) => (
            _array.forEach(element => {
-             if( (new Date (element.created).getUTCMonth()) == new Date().getUTCMonth()
-              && (new Date (element.created).getUTCFullYear()) == new Date().getUTCFullYear()
-              && (new Date (element.created).getUTCDate()) <= maxDateValue)
+             if( (new Date (element.created).getMonth()) == new Date().getMonth()
+              && (new Date (element.created).getFullYear()) == new Date().getFullYear()
+              && (new Date (element.created).getDate()) <= maxDateValue)
               {
                  if (element.symptomId == 2)
                  {

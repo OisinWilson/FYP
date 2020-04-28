@@ -5,7 +5,6 @@ import Svg, {Line} from 'react-native-svg';
 
 
 
-
 export default class BranchView extends React.Component {
     constructor() {
         super()

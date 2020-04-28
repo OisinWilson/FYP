@@ -1,29 +1,45 @@
+//Author : Oisin Wilson (C00213826)
+// This is used for inputting:  the if you ate gluten / your mood / any food that you ate
+
 import * as React from 'react';
 import * as Native from 'react-native';
 import DatabaseManager from './DataBaseManager';
 import {Picker} from '@react-native-community/picker';
+//import {ScanScreen} from './ScanScreen'
+import dataPass from './dataPass';
+
 
 export default class InputScreen extends React.Component{
     constructor(props){
         super(props);
+        
         this.state = {
           mood: 'NA',
-          mealText: '',
+          mealText: dataPass.MealName,
           meal: 'NA',
           gluten: 'NA',
-          //switchValue: false,
+          count: 0
         };
       }
 
-      toggleSwitch = value => {
-        this.setState({ switchValue: !this.state.switchValue});
-      };
-     
+      componentDidMount()
+      { //This is only use to reload the state when returning to this screen
+        this.focusListener = this.props.navigation.addListener('didFocus', () => {
+          this.setState({ count: this.state.count + 1 });
+        });
+      }
 
       render() {
-
-    
         const {navigate} = this.props.navigation;
+
+
+        let textBox = <Native.TextInput
+        style={{height: 40, borderColor: 'grey', borderWidth: 1}}
+        placeholder= {dataPass.MealName}
+        onChangeText={(mealText) => dataPass.MealName = mealText}
+        defaultValue={dataPass.MealName}
+      />;
+
         return (
           <Native.View style={styles.container}>
           
@@ -58,14 +74,19 @@ export default class InputScreen extends React.Component{
                 <Picker.Item label="Dinner" value="Dinner" />
                 </Picker>
 
-
-             <Native.TextInput
-                  style={{height: 40, borderColor: 'grey', borderWidth: 1}}
-                  placeholder="Type what you ate here!"
-                  onChangeText={(mealText) => this.setState({mealText})}
-                  defaultValue={this.state.mealText}
-                />
-
+                {textBox}
+              
+              <Native.Button title="Photo"
+                color= "#ECA37A"
+                onPress={() => {
+                  this.setState({
+                    mood: 'NA',
+                    mealText: dataPass.MealName,
+                    meal: 'NA',
+                    gluten: 'NA',
+                  }),
+                  navigate('SCAN')
+                }}/>
 
               <Native.Text>Do you feel you ate gluten?</Native.Text>
               
@@ -79,9 +100,6 @@ export default class InputScreen extends React.Component{
                 <Picker.Item label="Yes" value="Yes" />
                 <Picker.Item label="No" value="No" />
                 </Picker>
-
-
-              
 
 
             <Native.Button
@@ -103,11 +121,12 @@ export default class InputScreen extends React.Component{
                 {
                   DatabaseManager.getInstance().createFoodEvent(
                     this.state.meal,
-                    this.state.mealText,
+                    dataPass.MealName,
                     Date.now(),
                     (_, error) => {alert(error)},
                     null
                   );
+                  dataPass.MealName = "Type what you ate here!";
                 }
 
                 if(this.state.gluten != 'NA')
@@ -130,7 +149,7 @@ export default class InputScreen extends React.Component{
     } 
 
 
-
+//css styles
     const styles = Native.StyleSheet.create(
       {
           container:
@@ -141,15 +160,3 @@ export default class InputScreen extends React.Component{
           }
       }
     );
-
-
-
-    {
-      /*
-      <Native.Switch
-                style={{ marginTop: 5 }}
-                onValueChange={this.toggleSwitch}
-                value={this.state.switchValue}
-                />
-      */
-    }

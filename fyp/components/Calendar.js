@@ -1,46 +1,97 @@
+//Author : Oisin Wilson (C00213826)
+// This is a calender component that takes the relevent day's data and displays it
+
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import DatabaseManager from './DataBaseManager';
-
+ 
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedStartDate: null,
+      displayText: ""
     };
     this.onDateChange = this.onDateChange.bind(this);
   }
  
   onDateChange(date) {
-    this.setState({
+
+    var m_stack ="";
+
+    var dataDate = new Date(date)
+    dataDate.setDate(dataDate.getDate() + 1);
+
+    DatabaseManager.getInstance().fetchEvents(
+      dataDate.toUTCString(),
+      (_, error) => {alert(error)}, 
+       (_, {rows: { _array }}) => (
+         _array.forEach(element => {
+         // console.log(element);
+        
+          date = new Date(parseInt(element.created));
+            dateText = "";
+
+            if(date.getHours() < 10){ dateText = dateText + '0' + date.getHours() + ':'}
+            else{dateText = dateText + date.getHours() + ':'}
+
+            if(date.getMinutes() < 10){dateText = dateText + '0' + date.getMinutes() + ':'}
+            else{dateText = dateText + date.getMinutes() + ':'}
+
+            if(date.getSeconds() < 10){dateText = dateText + '0' + date.getSeconds()}
+            else{dateText = dateText + date.getSeconds()}
+
+            var fullText = "";
+
+            switch (element.symptomId) {
+              case 0: //symptom
+                var symptomString = JSON.parse(element.objData)["name"];
+                symptomString = (symptomString[0] + symptomString.slice(1).toLowerCase());
+                fullText = symptomString + " At " + dateText+'\n';
+                break;
+            
+              case 1: //mood
+                fullText = "Felt " + JSON.parse(element.objData)["emotion"] + " At " + dateText+'\n';
+                break;
+
+              case 2: //gluten
+                if (JSON.parse(element.objData)["gluten"] == "Yes") 
+                  fullText = "Positive for Gluten At " + dateText+'\n'
+                else
+                  fullText = "Negative for Gluten At " + dateText+'\n'
+                break;
+
+              case 3: //food
+                fullText = "Had " + JSON.parse(element.objData)["note"] + " as " + JSON.parse(element.objData)["mealType"] + " At " + dateText+'\n';
+                break;
+
+              default:
+                break;
+            }
+            m_stack += fullText;
+    }),  this.setState({
       selectedStartDate: date,
-    });
+      displayText: m_stack
+    })));
   }
+
   render() {
-    const { selectedStartDate } = this.state;
-    const startDate = selectedStartDate ? selectedStartDate.toString() : '';
-    
-    
     return (
       <View style={styles.container}>
         <CalendarPicker
           onDateChange={this.onDateChange}
         />
- 
         <View>
-          <Text>SELECTED DATE:{ startDate }</Text>
+            <Text>{this.state.displayText}</Text>
         </View>
       </View>
     );
   }
 }
- 
+
+//Css style
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -48,103 +99,3 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
-
-/*
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert, Platform, Image } from 'react-native';
-import CalendarPicker from 'react-native-calendar-picker';
-import moment from 'moment';
-
-
-let today = moment();
-let day = today.clone().startOf('month');
-let customDatesStyles = [];
-while(day.add(1, 'day').isSame(today, 'month')) {
-  customDatesStyles.push({
-    date: day.clone(),
-    style: {backgroundColor: '#'+('#00000'+(Math.random()*(1<<24)|0).toString(16)).slice(-6)},
-    textStyle: {color: 'black'},
-    containerStyle: [],
-  });
-}
-
-export default class CalendarScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedStartDate: null,
-      selectEndDate: null,
-    };
-    this.onDateChange = this.onDateChange.bind(this);
-  }
-  static navigationOptions = {
-        title: 'Welcome!'
-    };
-  
-  onDateChange(date, type) {
-    if (type === 'END_DATE'){
-      this.setState({selectedEndDate: date,});
-    } else {
-      this.setState({selectedStartDate: date,
-                      selectedEndDate: null,});
-    }
-  }
-
-  render() {
-    const { selectedStartDate, selectedEndDate } = this.state;
-    const minDate = new Date();
-    const maxDate = new Date(2020, 2, 3);
-    const startDate = selectedStartDate ? selectedStartDate.toString() : '';
-    const endDate = selectedEndDate ? selectedEndDate.toString() : '';
-
-    return (
-      <View style={styles.MainContainer}>
-        <CalendarPicker
-          startFromMonday={true}
-          allowRangeSelection={true}
-          minDate={minDate}
-          maxDate={maxDate}
-          todayBackgroundColor={'transparent'}
-          //selectedDayColor="#7300e6"
-          //selecteDaTextColor="#FFFFFF"
-          customDatesStyles={customDatesStyles}
-          onDateChange={this.onDateChange}
-        />
-  
-        <View>
-          <Text>Selected Start Date:{ startDate }</Text>
-          <Text>Selected End Date:{ endDate }</Text>
-        </View>
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create(
-  {
-        MainContainer:
-        {
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          paddingTop: ( Platform.OS === 'ios' ) ? 20 : 0,
-          backgroundColor: '#FFFFFF',
-        },
-     
-        bottomView:{
-          width: '100%', 
-          height: 50, 
-          backgroundColor: '#FF9800', 
-          justifyContent: 'center', 
-          alignItems: 'center',
-          position: 'absolute',
-          bottom: 0
-        },
-     
-        textStyle:{
-          color: '#fff',
-          fontSize:22
-        },
-  
-  });
-  */

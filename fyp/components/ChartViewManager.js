@@ -2,12 +2,14 @@ import * as React from 'react';
 import * as Native from 'react-native';
 import * as Chart from 'victory-native';
 import DatabaseManager from './DataBaseManager';
-
+import dataPass from './dataPass';
 
 export default class ChartViewManager extends React.Component{
   
       componentDidMount()
       {
+        //dataPass.MealCode = 1;
+
         DatabaseManager.getInstance().fetchEvents(
           new Date().UTC,
           (_, error) => {alert(error)}, 

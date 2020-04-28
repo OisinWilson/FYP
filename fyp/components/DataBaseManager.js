@@ -1,3 +1,6 @@
+//Author : Oisin Wilson (C00213826)
+// This has the database access and commands
+
 import * as SQLite from 'expo-sqlite';
 
 let InputType = {

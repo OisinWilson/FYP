@@ -1,3 +1,6 @@
+//Author : Oisin Wilson (C00213826)
+//Entry Point for Final Year Project
+
 import * as React from 'react';
 import AppNavigator from './components/AppNavigator';
 import { createAppContainer } from 'react-navigation';
