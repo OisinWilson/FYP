@@ -1,3 +1,10 @@
+Link To:
+	Video:
+	Poster:
+		
+
+
+
 To start Project:
 
 	Install Android Emulator (Android Studio)
@@ -30,4 +37,15 @@ Known Issue starting React Native on Expo :
   			/heapCapture\/bundle\.js/,
   			/.*\/__tests__\/.*/
 			];
+
+
+Special Thanks to :  
+
+monkik	- Barcode Image (https://www.flaticon.com/free-icon/barcode_664456?term=barcode&page=1&position=1)
+
+Ahkâm - Input Image (https://www.freeiconspng.com/img/8604)
+
+Ahkâm - House Image (https://www.freeiconspng.com/img/202)
+
+Ahkâm - Calandar Image (https://www.freeiconspng.com/img/4096)
 
