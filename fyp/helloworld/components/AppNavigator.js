@@ -12,19 +12,20 @@ import PolarView from './polar';
 import SymptomInputScreen from './SymptomInputScreen';
 import InputScreen from './InputManager';
 import ScanScreen from './ScanScreen';
-
+import Switch from './Slider';
 
 const AppNavigator = createStackNavigator({
   Home: { screen: HomeScreen, navigationOptions: {header: null} },
-  Calendar: { screen: CalendarScreen},
+  Calendar: { screen: CalendarScreen, navigationOptions: {header: null}},
   SCV: {screen: CircleViewManager},
   BV: {screen: BranchView},
   CV: {screen: ChartViewManager},
   PI: {screen:PiView},
   PO: {screen: PolarView},
   INPUTSYMP: {screen: SymptomInputScreen},
-  INPUT: {screen: InputScreen},
+  INPUT: {screen: InputScreen, navigationOptions: {header: null}},
   SCAN: {screen: ScanScreen, navigationOptions: {header: null},},
+  SLIDE: {screen: Switch},
 });
 
 export default  AppNavigator;

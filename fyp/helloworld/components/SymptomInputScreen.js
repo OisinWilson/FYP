@@ -5,6 +5,7 @@ import * as React from 'react';
 import * as Native from 'react-native';
 import DatabaseManager from './DataBaseManager';
 import {CheckBox} from 'react-native-elements'
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 export default class SymptomInputScreen extends React.Component{
@@ -30,7 +31,7 @@ export default class SymptomInputScreen extends React.Component{
 
         return (
           <Native.View style={styles.container}>
-             
+
             
              <Native.TextInput
                   style={{height: 40, borderColor: 'grey', borderWidth: 1}}

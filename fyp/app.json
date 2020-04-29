@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "FYP-SymptomTracker",
+    "slug": "fyp",
+    "privacy": "public",
+    "sdkVersion": "35.0.0",
+    "platforms": [
+      "android"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "android": {
+      "package": "com.opw.symptomtracker",
+      "googleServicesFile": "./google-services.json",
+      "versionCode": 1
+    }
+  }
+}

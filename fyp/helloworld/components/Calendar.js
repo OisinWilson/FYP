@@ -2,10 +2,11 @@
 // This is a calender component that takes the relevent day's data and displays it
 
 import React, { Component } from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {ScrollView, Text, View, Image, TouchableOpacity} from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import DatabaseManager from './DataBaseManager';
- 
+import styles from './styles';
+
 
 export default class App extends Component {
   constructor(props) {
@@ -78,24 +79,42 @@ export default class App extends Component {
   }
 
   render() {
+    const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
         <CalendarPicker
           onDateChange={this.onDateChange}
         />
-        <View>
-            <Text>{this.state.displayText}</Text>
-        </View>
+        
+        <ScrollView>
+          <Text>{this.state.displayText}</Text>
+        </ScrollView>
+
+        {BottomBar(2, navigate) }
       </View>
     );
   }
 }
 
-//Css style
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    marginTop: 20,
-  },
-});
+
+function BottomBar(selector, navigate) {
+  return( 
+    <View style={styles.bottomView}>
+
+                { selector == 2 ? <Image style = {styles.calenderActive} source={require('./calendar.png')}/> 
+                                                : <Image style = {styles.calenderInactive} source={require('./calendar.png')}/>}
+
+                { selector == 1 ? <Image style = {styles.homeActive} source={require('./house.png')}/> 
+                                                : <Image style = {styles.homeInactive}source={require('./house.png')}/>}
+
+                { selector == 0 ? <Image style = {styles.InputActive} source={require('./input.png')}/> 
+                                                : <Image style = {styles.InputInactive} source={require('./input.png')}/>}
+
+                <TouchableOpacity style={styles.BottomTouchLeft} onPress={ () => navigate("INPUT") }/>
+
+                <TouchableOpacity style={styles.BottomTouchMid} onPress={ () => navigate("Home")} />
+
+                <TouchableOpacity style={styles.BottomTouchRight} onPress={ () => navigate("Calendar")}/>
+    </View>
+    )
+};
