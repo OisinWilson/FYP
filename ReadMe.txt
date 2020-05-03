@@ -1,11 +1,5 @@
-Link To:
-	Video:
-	Poster:
-		
 
-
-
-To start Project:
+Project:
 
 	Install Android Emulator (Android Studio)
 
@@ -18,6 +12,22 @@ To start Project:
 	'expo start'
 
 	On expo pop up 'Run on Andriod simulator'
+
+
+API:
+	To Start
+		run cmd
+		cd C:\development\tomcat
+		.\bin\catalina.bat start
+
+	To Stop
+		run cmd
+		cd C:\development\tomcat
+		.\bin\catalina.bat stop
+
+	Example Input to brouser
+		http://localhost:8080/celitrackerrestapi/device/event?token=f08d9cedad8fa2948008e3c80ca98c501d64a74e81b1fd9381ee03a0a5fde249
+		http://localhost:8080/celitrackerrestapi/device/event/time?seconds=10
 
 
 Known Issue starting React Native on Expo :
